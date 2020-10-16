@@ -2,6 +2,8 @@ const express = require("express")
 const socketio = require("socket.io")
 const http = require("http")
 const router = require("./router")
+const cors = require("cors")
+const path = require('path');
 
 const {addUser, removeUser, getUser, getUsersInRoom} = require("./users")
 
@@ -53,9 +55,11 @@ io.on("connection", (socket)=>{
 
   })
 })
+app.use(cors())
 app.use(express.static(path.join(__dirname, 'build')));
 app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 app.use(router)
+
 server.listen(PORT, () => console.log(`Server has start on port ${PORT}`))
